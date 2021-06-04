@@ -20,10 +20,9 @@ table .absorbing-column {
 }
 
 td {
-  /* border: 1px solid #000; */
-
   overflow-wrap: break-word;
   word-wrap: break-word;
+  font-family: "Verdana";
 }
 
 tr td:last-child {
@@ -34,7 +33,7 @@ tr td:last-child {
 }
 
 thead {
-  background-color: aqua;
+  background-color: black;
   color: white;
   display: table-header-group;
 }
@@ -42,10 +41,6 @@ thead {
 tbody {
   border-bottom: 1px solid #dddddd;
 }
-
-/* tbody tr:nth-of-type(even) {
-  background-color: #f3f3f3;
-} */
 
 tbody tr:last-of-type {
   border-bottom: 2px solid black;
