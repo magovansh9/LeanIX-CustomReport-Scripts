@@ -50,11 +50,6 @@ const state = {
       key: "relTechnologyStackToITComponent",
       header: "Last Updated Date",
     },
-
-    {
-      key: "id",
-      header: "FactSheet Link",
-    },
   ],
 
   // variable to hold the computed average completion ratio for all factsheets
@@ -79,6 +74,7 @@ const methods = {
           node {
             displayName
             id
+            type
             comments {
               edges {
                 node {
@@ -124,6 +120,7 @@ const methods = {
       }
     }
     
+    
     `;
     lx.showSpinner();
     try {
@@ -139,19 +136,41 @@ const methods = {
       let {
         displayName,
         completion,
+        type,
         subscriptions,
         comments,
         relTechnologyStackToITComponent,
         id,
       } = edge.node;
 
-      //Open FactSheet on a new page
+      // Open FactSheet on a new page
 
-      //Utilizes a common part of the url, and appends factsheet ids to get unique links for every FactSheet
-      id =
-        '<u><a href="https://teranet.leanix.net/TeranetSandbox/factsheet/TechnicalStack/' +
-        id +
-        '" target="_blank" style="color: blue">Go To FactSheet</a></u>';
+      // Utilizes a common part of the URL, and appends factsheet type and id to get unique links for every FactSheet
+      // The link is switched based on the workspace name embedded in the URL
+
+      const urlName = window.location.href;
+      const ws = "Sandbox";
+      if (urlName.includes(ws)) {
+        displayName =
+          '<u><a href="https://teranet.leanix.net/TeranetSandbox/factsheet/' +
+          type +
+          "/" +
+          id +
+          '" style="color:blue" target="_blank">' +
+          displayName +
+          "</a><u>";
+      } else {
+        displayName =
+          '<u><a href="https://teranet.leanix.net/TeranetProduction/factsheet/' +
+          type +
+          "/" +
+          id +
+          '" style="color:blue" target="_blank">' +
+          displayName +
+          "</a><u>";
+      }
+
+      console.log(this.baseUrl);
 
       //Total Number of FactSheets
       const totalCount = relTechnologyStackToITComponent.totalCount;
@@ -195,7 +214,11 @@ const methods = {
       // Display the ISO 8601 date in a normal form by using a substring of the whole string
       relTechnologyStackToITComponent = relTechnologyStackToITComponent[0];
       var strMaxDate = String(relTechnologyStackToITComponent);
-      relTechnologyStackToITComponent = strMaxDate.substr(0, 10);
+      if (relTechnologyStackToITComponent == null) {
+        relTechnologyStackToITComponent = "n/a";
+      } else {
+        relTechnologyStackToITComponent = strMaxDate.substr(0, 10);
+      }
 
       // NOTE: To optimize and replace the logic in the code above, one may use the Javascript "reduce" function
 
@@ -208,7 +231,6 @@ const methods = {
         displayNameITComponents,
         totalCount,
         completeFactSheets,
-        id,
       };
     });
 
@@ -225,7 +247,6 @@ const methods = {
       "comments",
       "displayNameITComponents",
       "relTechnologyStackToITComponent",
-      "id",
     ];
     this.columns = columnKeys.map((key) => ({
       key,
