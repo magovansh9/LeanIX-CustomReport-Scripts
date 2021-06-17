@@ -24,6 +24,18 @@
     <div x-cloak class="mx-auto h-screen">
       <div class="h-full flex flex-col pt-4">
         <div class="flex overflow-hidden h-full -pl-16">
+          <!-- <div class="w-1/3 flex flex-col border mr-4 rounded bg-red-100">
+            <div class="text-center py-2 text-xl uppercase font-semibold border-b bg-red-600 text-white rounded-t">
+              GraphQL Query Response
+            </div>
+            <pre class="px-4 text-sm overflow-auto" x-text="JSON.stringify(response, null, 2)"></pre>
+          </div>
+          <div class="w-1/3 flex flex-col border mr-4 rounded bg-green-100">
+            <div class="text-center py-2 text-xl uppercase font-semibold border-b bg-green-600 text-white rounded-t">
+              Transformed Data
+            </div>
+            <pre class="px-4 text-sm overflow-auto" x-text="JSON.stringify(rows, null, 2)"></pre>
+          </div> -->
         <div class="flex">
           <div class="overflow-auto px-4">
             <table class="table-fixed w-full text-sm text-center">
@@ -37,6 +49,15 @@
               <tbody>
                 <template x-for="(row, idx) in rows" :key="idx">
                   <tr class="bg-white ease-in-out transition-color duration-150">
+                   <!-- <tr class="(row[totalCount] == 0 ? "bg-white ease-in-out transition-color duration-150" : "bg-grey ease-in-out transition-color duration-150")"> -->
+                     <!-- <td class="border px-4 py-2" x-html=row[displayName]></td>
+                     <td class="border px-4 py-2" x-text=row[completion]></td>
+                     <td class="border px-4 py-2" x-text=row[subscriptions]></td>
+                     <td class="border px-4 py-2" x-text=row[totalCount]></td>
+                     <td class="border px-4 py-2" x-text=row[CompleteFactsheets]></td>
+                     <td class="border px-4 py-2" x-text=row[comments]></td>
+                     <td class="border px-4 py-2" x-text=row[displayNameITComponents]></td>
+                     <td class="border px-4 py-2" x-text=row[lastUpdatedDate]></td> -->
                     <template x-for="column in columns" :key="column.key">
                       <td class="border px-4 py-2" x-html="row[column.key]">gno</td>
                     </template>

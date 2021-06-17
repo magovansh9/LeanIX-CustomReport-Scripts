@@ -33,7 +33,7 @@ const state = {
     },
 
     {
-      key: "completeFactSheets",
+      key: "CompleteFactsheets",
       header: "Complete Factsheets",
     },
 
@@ -47,7 +47,7 @@ const state = {
     },
 
     {
-      key: "relTechnologyStackToITComponent",
+      key: "lastUpdatedDate",
       header: "Last Updated Date",
     },
   ],
@@ -110,6 +110,7 @@ const methods = {
                       displayName
                       type
                       updatedAt
+                      qualitySeal
                     }
                   }
                 }
@@ -119,6 +120,7 @@ const methods = {
         }
       }
     }
+    
     
     
     `;
@@ -148,9 +150,10 @@ const methods = {
       // Utilizes a common part of the URL, and appends factsheet type and id to get unique links for every FactSheet
       // The link is switched based on the workspace name embedded in the URL
 
-      const urlName = window.location.href;
+      const urlName = window.location.host;
+      const pathname = window.location.pathname;
       const ws = "Sandbox";
-      if (urlName.includes(ws)) {
+      if (pathname.includes(ws)) {
         displayName =
           '<u><a href="https://teranet.leanix.net/TeranetSandbox/factsheet/' +
           type +
@@ -169,19 +172,43 @@ const methods = {
           displayName +
           "</a><u>";
       }
+      // displayName =
+      //   '<u><a href="' +
+      //   window.location.origin +
+      //   "/factsheet/" +
+      //   type +
+      //   "/" +
+      //   id +
+      //   '" style="color:blue" target="_blank">' +
+      //   displayName +
+      //   "</a></u>";
+      // console.log(window.location.origin);
 
-      console.log(this.baseUrl);
-
-      //Total Number of FactSheets
+      // Total Number of children ITComponent FactSheets
       const totalCount = relTechnologyStackToITComponent.totalCount;
 
-      //Completed FactSheets
-      const completeFactSheets = Math.floor(
-        (completion.percentage / 100) * totalCount
-      );
+      // Number of completed children ITComponent Factsheets
+      var qualitySealITComponentFactsheet =
+        relTechnologyStackToITComponent.edges.map(
+          (edge) => edge.node.factSheet.qualitySeal
+        );
+
+      const CompleteFactsheets = qualitySealITComponentFactsheet.filter(
+        function (element) {
+          return element == "APPROVED";
+        }
+      ).length;
 
       //Completion Percentage
-      completion = completion.percentage + "%";
+      completion =
+        Math.floor(
+          ((parseFloat(CompleteFactsheets) * 1.0) / parseFloat(totalCount)) *
+            100
+        ) + "%";
+
+      if (totalCount == 0) {
+        completion = "n/a";
+      }
 
       //Subscribed Users
       subscriptions = subscriptions.edges.map(
@@ -200,24 +227,42 @@ const methods = {
 
       // Get the Latest Update Date for all the IT Component Factsheets and display it for each Technical Stack FactSheet
 
-      // Returns an array of ISO 8601 dates
-      relTechnologyStackToITComponent =
-        relTechnologyStackToITComponent.edges.map(
-          (edge) => edge.node.factSheet.updatedAt
-        );
+      // // Returns an array of ISO 8601 dates
+      var lastUpdatedDate = relTechnologyStackToITComponent.edges.map(
+        (edge) => edge.node.factSheet.updatedAt
+      );
 
-      // Sort in a descending Order
-      relTechnologyStackToITComponent.sort(function (a, b) {
+      // // Sort in a descending Order
+      lastUpdatedDate.sort(function (a, b) {
         return a > b ? -1 : a < b ? 1 : 0;
       });
 
-      // Display the ISO 8601 date in a normal form by using a substring of the whole string
-      relTechnologyStackToITComponent = relTechnologyStackToITComponent[0];
-      var strMaxDate = String(relTechnologyStackToITComponent);
-      if (relTechnologyStackToITComponent == null) {
-        relTechnologyStackToITComponent = "n/a";
+      // // Display the ISO 8601 date in a normal form by using a substring of the whole string
+      lastUpdatedDate = lastUpdatedDate[0];
+      var strMaxDate = String(lastUpdatedDate);
+      var date = new Date(strMaxDate);
+      var day = date.getDate();
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var months = [
+        "January",
+        "Februray",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      if (totalCount == 0) {
+        lastUpdatedDate = "n/a";
       } else {
-        relTechnologyStackToITComponent = strMaxDate.substr(0, 10);
+        lastUpdatedDate = months[month - 1] + " " + day + " " + year;
       }
 
       // NOTE: To optimize and replace the logic in the code above, one may use the Javascript "reduce" function
@@ -227,10 +272,11 @@ const methods = {
         completion,
         subscriptions,
         comments,
-        relTechnologyStackToITComponent,
+        lastUpdatedDate,
         displayNameITComponents,
         totalCount,
-        completeFactSheets,
+        qualitySealITComponentFactsheet,
+        CompleteFactsheets,
       };
     });
 
@@ -242,11 +288,11 @@ const methods = {
       "displayName",
       "completion",
       "totalCount",
-      "completeFactSheets",
+      "CompleteFactsheets",
       "subscriptions",
       "comments",
       "displayNameITComponents",
-      "relTechnologyStackToITComponent",
+      "lastUpdatedDate",
     ];
     this.columns = columnKeys.map((key) => ({
       key,

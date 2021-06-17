@@ -1,13 +1,13 @@
 {
-  "name": "leanix-custom-report-tutorial-02",
-  "version": "1.0.0",
-  "description": "Tutorial on how to query workspace data from a custom report",
+  "name": "TLR Status Report",
+  "version": "2.0.0",
+  "description": "The report represents TLR tagged factsheets data",
   "engines": {
     "node": ">=12.16.2"
   },
   "leanixReport": {
-    "id": "net.leanix.reporting.tutorial.02",
-    "title": "Tutorial 02: querying workspace data from a custom report",
+    "id": "net.teranet.reporting.tlrreport",  
+    "title": "TLR Status Report",
     "defaultConfig": {}
   },
   "scripts": {
