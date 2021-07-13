@@ -33,3 +33,4 @@ Builds the report and outputs the build result into `dist` folder.
 
 Uploads the report to the workspace configured in `lxr.json`.
 Please see [Uploading to LeanIX workspace](https://github.com/leanix/leanix-reporting-cli#uploading-to-leanix-workspace).
+# LeanIX-CustomReport-Scripts
