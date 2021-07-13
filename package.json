@@ -1,13 +1,13 @@
 {
-  "name": "TLR Status Report",
-  "version": "2.0.0",
-  "description": "The report represents TLR tagged factsheets data",
+  "name": "it-component-technical-debt",
+  "version": "1.0.0",
+  "description": "The report presents Applications and Technical Stacks related to the given IT Components within a user-specified lifecycle",
   "engines": {
     "node": ">=12.16.2"
   },
   "leanixReport": {
-    "id": "net.teranet.reporting.tlrreport",  
-    "title": "TLR Status Report",
+    "id": "net.teranet.reporting.itcomponenttechnicaldebt",
+    "title": "it-component-technical-debt",
     "defaultConfig": {}
   },
   "scripts": {
